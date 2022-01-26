@@ -6,7 +6,7 @@ import { MsgExecuteContract } from "cosmjs-types/cosmwasm/wasm/v1/tx"
 import { toUtf8 } from "@cosmjs/encoding"
 import { getSigner, getLedgerSigner } from "./wallet"
 
-const IS_TESTNET = true
+const IS_TESTNET = !process.argv.includes("--mainnet")
 
 const JUNO_MAINNET_RPC = "https://rpc.juno-1.deuslabs.fi"
 const JUNO_TESTNET_RPC = "https://rpc.uni.juno.deuslabs.fi"
@@ -49,20 +49,21 @@ const main = async () => {
   const queryResponse = await querySmartContract(queryMessage)
   console.log(queryResponse)
 
+  /* TRANSACTION */
+  const txMessage = {
+    mint: {
+      token_id: "some_id",
+      owner: account.address,
+    },
+  }
+
   /* SIGN AND BROADCAST */
   const signAndBroadcastMessage: EncodeObject = {
     typeUrl: "/cosmwasm.wasm.v1.MsgExecuteContract",
     value: MsgExecuteContract.fromPartial({
       sender: account.address,
       contract: CONTRACT_ADDRESS,
-      msg: toUtf8(
-        JSON.stringify({
-          mint: {
-            token_id: "some_id",
-            owner: account.address,
-          },
-        })
-      ),
+      msg: toUtf8(JSON.stringify(txMessage)),
     }),
   }
   const signAndBroadcastResponse = await client.signAndBroadcast(
@@ -73,17 +74,11 @@ const main = async () => {
   console.log(signAndBroadcastResponse)
 
   /* EXECUTE */
-  const executeMessage = {
-    mint: {
-        token_id: 'some_id',
-        owner: account.address
-    }
-  }
   const executeResponse = await client.execute(
-      account.address,
-      CONTRACT_ADDRESS,
-      executeMessage,
-      'auto'
+    account.address,
+    CONTRACT_ADDRESS,
+    txMessage,
+    "auto"
   )
   console.log(executeResponse)
 }
