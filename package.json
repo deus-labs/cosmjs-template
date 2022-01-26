@@ -1,0 +1,27 @@
+{
+  "name": "cosmjs-template",
+  "version": "1.0.0",
+  "description": "A starter template for quick CosmJS prototyping",
+  "main": "index.js",
+  "repository": "https://github.com/deus-labs/cosmjs-template",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@types/node": "^17.0.12",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.27.0",
+    "@cosmjs/cosmwasm-stargate": "^0.27.0",
+    "@cosmjs/encoding": "^0.27.0",
+    "@cosmjs/ledger-amino": "^0.27.0",
+    "@cosmjs/proto-signing": "^0.27.0",
+    "@cosmjs/stargate": "^0.27.0",
+    "@ledgerhq/hw-transport-node-hid": "^6.20.0",
+    "cosmjs-types": "^0.4.1"
+  },
+  "scripts": {
+    "start": "npx ts-node index.ts"
+  }
+}
