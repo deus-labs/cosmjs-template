@@ -41,6 +41,7 @@ const main = async () => {
 
   /* ACCOUNT */
   const account = (await signer.getAccounts())[0]
+  console.log(account)
 
   /* QUERY */
   const queryMessage = {
